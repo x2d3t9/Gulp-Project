@@ -12,6 +12,14 @@ const gulp 	 	 = require('gulp'),
 	  notify     = require('gulp-notify');
 	  
 
+var onError = function(err) {
+  notify.onError({
+    title:    "Gulp",
+    message:  "Error: <%= error.message %>",
+    sound:    "Beep"
+  })(err);
+  this.emit('end');
+};
 
 
 //Scripts Task
@@ -20,7 +28,7 @@ gulp.task('scripts', () => {
 		.pipe(coffee());
 	let js = gulp.src('src/js/**/*.js');
 	return es.merge(jsScriptFromCoffe, js)
-	.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+	.pipe(plumber({errorHandler: onError}))
 	.pipe(concat('all.min.js'))
 	.pipe(uglify())
 	.pipe(connect.reload())
@@ -30,13 +38,15 @@ gulp.task('scripts', () => {
 
 //Style Tasck
 gulp.task('sass',  () => {
+
  return gulp.src('./src/scss/**/*.scss')
   .pipe(sourcemaps.init())
+  .pipe(plumber({errorHandler: onError}))
+  .pipe(sass({outputStyle: 'compressed'}))
   .pipe(autoprefixer({
         browsers: ['last 2 versions'],
         cascade: false
   }))
-  .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
   .pipe(concat('all.min.css'))
   .pipe(sourcemaps.write('./maps'))
   .pipe(connect.reload())
