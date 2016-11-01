@@ -12,6 +12,8 @@ const gulp 	 	 = require('gulp'),
 	  notify     = require('gulp-notify');
 	  
 
+
+//Error Messages 
 var onError = function(err) {
   notify.onError({
     title:    "Gulp",
@@ -38,19 +40,18 @@ gulp.task('scripts', () => {
 
 //Style Tasck
 gulp.task('sass',  () => {
-
- return gulp.src('./src/scss/**/*.scss')
-  .pipe(sourcemaps.init())
-  .pipe(plumber({errorHandler: onError}))
-  .pipe(sass({outputStyle: 'compressed'}))
-  .pipe(autoprefixer({
-        browsers: ['last 2 versions'],
-        cascade: false
-  }))
-  .pipe(concat('all.min.css'))
-  .pipe(sourcemaps.write('./maps'))
-  .pipe(connect.reload())
-  .pipe(gulp.dest('./app/css'));
+	 return gulp.src('./src/scss/**/*.scss')
+	  .pipe(sourcemaps.init())
+	  .pipe(plumber({errorHandler: onError}))
+	  .pipe(sass({outputStyle: 'compressed'}))
+	  .pipe(autoprefixer({
+	        browsers: ['last 2 versions'],
+	        cascade: false
+	  }))
+	  .pipe(concat('all.min.css'))
+	  .pipe(sourcemaps.write('./maps'))
+	  .pipe(connect.reload())
+	  .pipe(gulp.dest('./app/css'));
 });
 
 
@@ -72,11 +73,11 @@ gulp.task('watch', () => {
 
 //Localhost Livereload
 gulp.task('connect', function() {
-  connect.server({
-  	port: 8888,
-    root: 'app',
-    livereload: true
-  });
+	connect.server({
+		port: 8888,
+	root: 'app',
+	livereload: true
+	});
 });
 
 //gulp
